@@ -3,11 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Rodolfo/Documents/NetBeansProjects/AnalizadorLexico/src/clases/Tokens.java</file>
-            <file>file:/C:/Users/Rodolfo/Documents/NetBeansProjects/AnalizadorLexico/src/ventanas/FramePrincipal.java</file>
-            <file>file:/C:/Users/Rodolfo/Documents/NetBeansProjects/AnalizadorLexico/src/clases/Lexer.flex</file>
-            <file>file:/C:/Users/Rodolfo/Documents/NetBeansProjects/AnalizadorLexico/src/clases/GeneradorLexico.java</file>
-            <file>file:/C:/Users/Rodolfo/Documents/NetBeansProjects/AnalizadorLexico/src/clases/Lexer.java</file>
+            <file>file:/C:/Users/Rodolfo/Documents/NetBeansProjects/Analizador/Codigo/src/clases/FramePrincipal.java</file>
+            <file>file:/C:/Users/Rodolfo/Documents/NetBeansProjects/Analizador/Codigo/src/clases/Lexer.java</file>
+            <file>file:/C:/Users/Rodolfo/Documents/NetBeansProjects/Analizador/Codigo/src/clases/GeneradorLexico.java</file>
+            <file>file:/C:/Users/Rodolfo/Documents/NetBeansProjects/Analizador/Codigo/src/clases/LexerCup.java</file>
+            <file>file:/C:/Users/Rodolfo/Documents/NetBeansProjects/Analizador/Codigo/src/clases/Lexer.flex</file>
+            <file>file:/C:/Users/Rodolfo/Documents/NetBeansProjects/Analizador/Codigo/src/clases/LexerCup.flex</file>
+            <file>file:/C:/Users/Rodolfo/Documents/NetBeansProjects/Analizador/Codigo/src/clases/Tokens.java</file>
+            <file>file:/C:/Users/Rodolfo/Documents/NetBeansProjects/Analizador/Codigo/src/clases/Sintax.cup</file>
         </group>
     </open-files>
 </project-private>

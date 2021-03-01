@@ -6,44 +6,47 @@ import static clases.Tokens.*;
 L=[a-zA-Z_]+
 D=[0-9]+
 literal=(\"([^\"]*)\"|\'([^\']*)\')+
-espacio=[ ,\t,\r,\n]+
+caracter=('([^\'])\')+
+espacio=[ ,\t,\r]+
 %{
     public String lexeme;
 %}
 %%
-int |
-public |
-private |
-protected |
-class |
-return |
-bool |
-double |
-float |
-long |
-void |
-short |
-static |
-try |
-cath |
-char |
-if |
-else |
-for |
-while {lexeme=yytext(); return Reservadas;}
-"{" | "}" | "(" | ")" {lexeme=yytext(); return Delimitador;}
-"<" | ">" | "==" | ">=" | "<=" | "!="  {lexeme=yytext(); return Comparador;}
-"&&" | "||" | "!" | "true" | "false" {lexeme=yytext(); return Logico;}
+public {lexeme=yytext(); return Public;}
+private {lexeme=yytext(); return Private;}
+class {lexeme=yytext(); return Class;}
+string {lexeme=yytext(); return String;}
+int {lexeme=yytext(); return Int;}
+bool {lexeme=yytext(); return Bool;}
+double {lexeme=yytext(); return Double;}
+float {lexeme=yytext(); return Float;}
+long {lexeme=yytext(); return Long;}
+short {lexeme=yytext(); return Short;}
+char {lexeme=yytext(); return Char;}
+if {lexeme=yytext(); return If;}
+else {lexeme=yytext(); return Else;}
+while {lexeme=yytext(); return While;}
+do {lexeme=yytext(); return Do;}
+"main" {lexeme=yytext(); return Main;}
+"{" {lexeme=yytext(); return Llave_a;} 
+"}" {lexeme=yytext(); return Llave_c;} 
+"(" {lexeme=yytext(); return Parentesis_a;} 
+")" {lexeme=yytext(); return Parentesis_c;}
 {literal} {lexeme=yytext(); return Literal;}
-"," {return Coma;}
-";" {return PuntoyComa;}
+{caracter} {lexeme=yytext(); return Caracter;}
+"," {lexeme=yytext(); return Coma;}
+";" {lexeme=yytext(); return PuntoyComa;}
 {espacio} {/*Ignore*/}
 "//".* {/*Ignore*/}
-"=" {return Igual;}
-"+" {return Suma;}
-"-" {return Resta;}
-"*" {return Multiplicacion;}
-"/" {return Division;}
+"\n" {lexeme=yytext(); return Linea;}
+"=" {lexeme=yytext(); return Igual;}
+"+" {lexeme=yytext(); return Suma;}
+"-" {lexeme=yytext(); return Resta;}
+"*" {lexeme=yytext(); return Multiplicacion;}
+"/" {lexeme=yytext(); return Division;}
+( "&&" | "||" | "!" | "&" | "|" ) {lexeme=yytext(); return Op_logico;}
+( ">" | "<" | "==" | "!=" | ">=" | "<=" | "<<" | ">>" ) {lexeme = yytext(); return Op_relacional;}
+(true | false)      {lexeme = yytext(); return Op_booleano;}
 {L}({L}|{D})* {lexeme=yytext(); return Identificador;}
 ("(-"{D}+")")|{D}+ {lexeme=yytext(); return Numero;}
  . {return ERROR;}

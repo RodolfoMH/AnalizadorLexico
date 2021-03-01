@@ -3,10 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ventanas;
+package clases;
 
 import clases.Lexer;
+import clases.Sintax;
 import clases.Tokens;
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,9 +16,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Reader;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java_cup.runtime.Symbol;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -31,6 +35,54 @@ public class FramePrincipal extends javax.swing.JFrame {
     public FramePrincipal() {
         initComponents();
         this.setLocationRelativeTo(null);
+    }
+    public void analizadorSintactico(){
+        String ST = codigoFuente.getText();
+        Sintax s = new Sintax(new clases.LexerCup(new StringReader(ST)));
+        
+        try {
+            s.parse();
+            analisisSintacticoResultado.setText("Analisis realizado correctamente");
+            analisisSintacticoResultado.setForeground(new Color(25, 111, 61));
+        } catch (Exception ex) {
+            Symbol sym = s.getS();
+            analisisSintacticoResultado.setText("Error de sintaxis. Linea: " + (sym.right + 1) + " Columna: " + (sym.left + 1) + ", Texto: \"" + sym.value + "\"");
+            analisisSintacticoResultado.setForeground(Color.red);
+        }
+    }
+    public void analizadorLexico(Reader lector) throws IOException{
+            int contadorLineas =1;
+            Lexer lexer = new Lexer(lector);
+            ArrayList<String[]> resultado = new ArrayList<>();
+            DefaultTableModel model = (DefaultTableModel) tokensTable.getModel();
+            model.getDataVector().removeAllElements();
+            model.addRow(new String[]{"Linea", contadorLineas+""});
+            contadorLineas++;
+            while(true)
+            {
+                Tokens tokens = lexer.yylex();
+                if(tokens==null)
+                {
+                    //resultado+="FIN";
+                    //tokensSalida.setText(resultado);
+         
+                    model.addRow(resultado.toArray());
+                    return;
+                }
+                switch (tokens) {
+                    
+                    case Linea: 
+                        model.addRow(new String[]{tokens.toString(), contadorLineas+""});
+                        contadorLineas++;
+                        break;
+                    case ERROR:
+                        model.addRow(new String[]{"Caracter no Definido.", ""});
+                        break;
+                    default:
+                        model.addRow(new String[]{ lexer.lexeme, tokens.toString() });
+                        break;
+                }
+            }
     }
 
     /**
@@ -50,6 +102,9 @@ public class FramePrincipal extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         tokensTable = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        analisisSintacticoResultado = new javax.swing.JTextArea();
+        sintaticAnalixLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -85,45 +140,68 @@ public class FramePrincipal extends javax.swing.JFrame {
 
         jLabel1.setText("By José Rodolfo Morel, Mat: 1-16-0328.");
 
+        analisisSintacticoResultado.setColumns(20);
+        analisisSintacticoResultado.setFont(new java.awt.Font("Monospaced", 0, 24)); // NOI18N
+        analisisSintacticoResultado.setRows(5);
+        jScrollPane1.setViewportView(analisisSintacticoResultado);
+
+        sintaticAnalixLabel2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        sintaticAnalixLabel2.setText("Analisis Sintactico");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(codigoFuenteLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tokensLabel)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel1)
+                                .addGap(190, 190, 190))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(21, 21, 21)
+                                .addComponent(codigoFuenteLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton1)
+                                .addGap(26, 26, 26)))
+                        .addComponent(tokensLabel)
+                        .addGap(0, 285, Short.MAX_VALUE)))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(sintaticAnalixLabel2)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(20, 20, 20)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(384, Short.MAX_VALUE)))
+                    .addContainerGap(803, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(31, Short.MAX_VALUE)
+                .addContainerGap(39, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tokensLabel)
-                    .addComponent(jButton1))
+                    .addComponent(sintaticAnalixLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 459, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(8, 8, 8)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(codigoFuenteLabel)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(codigoFuenteLabel)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -149,35 +227,12 @@ public class FramePrincipal extends javax.swing.JFrame {
         }
         Reader lector;
         
+        
         try {
             lector = new BufferedReader(new FileReader("archivo.txt"));
-            Lexer lexer = new Lexer(lector);
-            ArrayList<String[]> resultado = new ArrayList<>();
-            DefaultTableModel model = (DefaultTableModel) tokensTable.getModel();
-            model.getDataVector().removeAllElements();
-            while(true)
-            {
-                Tokens tokens = lexer.yylex();
-                if(tokens==null)
-                {
-                    //resultado+="FIN";
-                    //tokensSalida.setText(resultado);
-         
-                    model.addRow(resultado.toArray());
-                    return;
-                }
-                switch (tokens) {
-                    case Identificador: case Numero: case Reservadas: case Delimitador: case Comparador: case Logico:case Literal:
-                        model.addRow(new String[]{lexer.lexeme, tokens.toString()});
-                        break;
-                    case ERROR:
-                        model.addRow(new String[]{"Caracter no Definido.", ""});
-                        break;
-                    default:
-                        model.addRow(new String[]{ "Token", tokens.toString() });
-                        break;
-                }
-            }
+            analizadorLexico(lector);
+            analizadorSintactico();
+            
         } catch (FileNotFoundException ex) {
             Logger.getLogger(FramePrincipal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -222,12 +277,15 @@ public class FramePrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea analisisSintacticoResultado;
     private javax.swing.JTextArea codigoFuente;
     private javax.swing.JLabel codigoFuenteLabel;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel sintaticAnalixLabel2;
     private javax.swing.JLabel tokensLabel;
     private javax.swing.JTable tokensTable;
     // End of variables declaration//GEN-END:variables

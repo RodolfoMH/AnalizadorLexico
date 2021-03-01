@@ -1,1 +1,9 @@
-a!true
+public class Main{
+int a=5;
+int med(){
+if(a>5){
+int b=6;
+b=a+5;
+}
+}
+}

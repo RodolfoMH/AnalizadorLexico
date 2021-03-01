@@ -1,0 +1,133 @@
+package clases;
+
+import java_cup.runtime.Symbol;
+
+parser code
+{:
+    private Symbol s;
+    
+    public void syntax_error(Symbol s){
+        this.s = s;
+    }
+
+    public Symbol getS(){
+        return this.s;
+}
+:};
+
+terminal Linea, Int,Char,String,Do,Public,Private,Class,Caracter,Op_booleano,Op_relacional,Op_logico,Short,Long,Float,Double,Bool, Literal, If, Else, While, Igual, Suma, Resta, Multiplicacion, Division, 
+    Parentesis_a, Parentesis_c, Llave_a, Llave_c, Main, Coma,PuntoyComa, Identificador,Numero, ERROR;
+non terminal INICIO,SENTENCIA,EXPRECION,DECLARACION,DECLARACION_METODO,BLOQUE,PARAMETROS, IF, IF_ELSE,SENTENCIA_BOOLEANA,WHILE, DO_WHILE;
+
+start with INICIO;
+
+INICIO ::= 
+    Public Class Identificador Llave_a BLOQUE Llave_c |
+    Class Identificador Llave_a BLOQUE Llave_c |
+    Private Class Identificador Llave_a BLOQUE Llave_c 
+;
+SENTENCIA ::= 
+    SENTENCIA DECLARACION |
+    DECLARACION |
+    SENTENCIA IF |
+    IF |
+    SENTENCIA IF_ELSE |
+    IF_ELSE |
+    SENTENCIA WHILE |
+    WHILE |
+    SENTENCIA DO_WHILE |
+    DO_WHILE |
+    SENTENCIA EXPRECION |
+    EXPRECION
+;
+
+EXPRECION ::=
+    Identificador Igual Identificador PuntoyComa |
+    Identificador Igual Numero PuntoyComa |
+    Identificador Igual Op_booleano PuntoyComa |
+    Identificador Igual Literal PuntoyComa |
+    Identificador Igual Identificador Suma Identificador PuntoyComa |
+    Identificador Igual Identificador Resta Identificador PuntoyComa |
+    Identificador Igual Identificador Multiplicacion Identificador PuntoyComa |
+    Identificador Igual Identificador Division Identificador PuntoyComa |
+    Identificador Igual Identificador Suma Numero PuntoyComa |
+    Identificador Igual Numero Suma Identificador PuntoyComa |
+    Identificador Igual Identificador Resta Numero PuntoyComa |
+    Identificador Igual Numero Resta Identificador PuntoyComa |
+    Identificador Igual Identificador Multiplicacion Numero PuntoyComa |
+    Identificador Igual Numero Multiplicacion Identificador PuntoyComa |
+    Identificador Igual Identificador Division Numero PuntoyComa |
+    Identificador Igual Numero Division Identificador PuntoyComa
+    
+;
+
+BLOQUE ::= 
+    BLOQUE DECLARACION |
+    DECLARACION |
+    BLOQUE DECLARACION_METODO |
+    DECLARACION_METODO
+;
+
+DECLARACION ::= 
+  
+    Int Identificador PuntoyComa  | 
+    Int Identificador Igual Numero PuntoyComa |
+    Int Identificador Igual Identificador PuntoyComa |
+    Char Identificador PuntoyComa | 
+    Char Identificador Igual Caracter PuntoyComa |
+    Char Identificador Igual Identificador PuntoyComa |
+    String Identificador PuntoyComa | 
+    String Identificador Igual Literal PuntoyComa |
+    String Identificador Igual Identificador PuntoyComa |
+    Short Identificador PuntoyComa | 
+    Short Identificador Igual Numero PuntoyComa |
+    Long Identificador PuntoyComa | 
+    Long Identificador Igual Numero PuntoyComa |
+    Float Identificador PuntoyComa | 
+    Float Identificador Igual Numero PuntoyComa |
+    Double Identificador PuntoyComa | 
+    Double Identificador Igual Numero PuntoyComa |
+    Bool Identificador PuntoyComa | 
+    Bool Identificador Igual Op_booleano PuntoyComa |
+    Bool Identificador Igual Identificador PuntoyComa
+;
+
+PARAMETROS ::= 
+    (|Int Identificador | 
+    Char Identificador | 
+    String Identificador | 
+    Short Identificador | 
+    Long Identificador | 
+    Float Identificador | 
+    Double Identificador | 
+    Bool Identificador)  
+;
+
+DECLARACION_METODO ::=
+    Public Int Identificador Parentesis_a PARAMETROS Parentesis_c Llave_a SENTENCIA Llave_c | 
+    Int Identificador Parentesis_a PARAMETROS Parentesis_c Llave_a SENTENCIA Llave_c |
+    Private Int Identificador Parentesis_a PARAMETROS Parentesis_c Llave_a SENTENCIA Llave_c |
+    Public String Identificador Parentesis_a PARAMETROS Parentesis_c Llave_a SENTENCIA Llave_c | 
+    String Identificador Parentesis_a PARAMETROS Parentesis_c Llave_a SENTENCIA Llave_c |
+    Private String Identificador Parentesis_a PARAMETROS Parentesis_c Llave_a SENTENCIA Llave_c |
+    Public Bool Identificador Parentesis_a PARAMETROS Parentesis_c Llave_a SENTENCIA Llave_c | 
+    Bool Identificador Parentesis_a PARAMETROS Parentesis_c Llave_a SENTENCIA Llave_c |
+    Private Bool Identificador Parentesis_a PARAMETROS Parentesis_c Llave_a SENTENCIA Llave_c 
+;
+
+IF ::= If Parentesis_a SENTENCIA_BOOLEANA Parentesis_c Llave_a SENTENCIA Llave_c
+;
+SENTENCIA_BOOLEANA ::= 
+    Op_booleano | 
+    Identificador Op_relacional Op_booleano |
+    Identificador Op_relacional Numero |
+    Identificador Op_relacional Identificador |
+    Identificador Op_relacional Literal 
+;
+IF_ELSE ::= If Parentesis_a SENTENCIA_BOOLEANA Parentesis_c Llave_a SENTENCIA Llave_c Else Llave_a SENTENCIA Llave_c
+;
+
+WHILE ::= While Parentesis_a SENTENCIA_BOOLEANA Parentesis_c Llave_a SENTENCIA Llave_c
+;
+DO_WHILE ::= Do Llave_a SENTENCIA Llave_c While Parentesis_a SENTENCIA_BOOLEANA Parentesis_c PuntoyComa
+;
