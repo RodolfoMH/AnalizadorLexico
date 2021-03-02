@@ -45,5 +45,6 @@ public enum Tokens {
     Op_logico,
     Public,
     Private,
-    Class
+    Class,
+    Return
 }

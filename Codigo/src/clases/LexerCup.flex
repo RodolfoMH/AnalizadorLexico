@@ -21,6 +21,7 @@ espacio=[ ,\t,\r,\n]+
     }
 %}
 %%
+return {return new Symbol(sym.Return, yychar, yyline, yytext());}
 public {return new Symbol(sym.Public, yychar, yyline, yytext());}
 private {return new Symbol(sym.Private, yychar, yyline, yytext());}
 class {return new Symbol(sym.Class, yychar, yyline, yytext());}

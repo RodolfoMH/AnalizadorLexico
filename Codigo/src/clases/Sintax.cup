@@ -15,7 +15,7 @@ parser code
 }
 :};
 
-terminal Linea, Int,Char,String,Do,Public,Private,Class,Caracter,Op_booleano,Op_relacional,Op_logico,Short,Long,Float,Double,Bool, Literal, If, Else, While, Igual, Suma, Resta, Multiplicacion, Division, 
+terminal Return, Linea, Int,Char,String,Do,Public,Private,Class,Caracter,Op_booleano,Op_relacional,Op_logico,Short,Long,Float,Double,Bool, Literal, If, Else, While, Igual, Suma, Resta, Multiplicacion, Division, 
     Parentesis_a, Parentesis_c, Llave_a, Llave_c, Main, Coma,PuntoyComa, Identificador,Numero, ERROR;
 non terminal INICIO,SENTENCIA,EXPRECION,DECLARACION,DECLARACION_METODO,BLOQUE,PARAMETROS, IF, IF_ELSE,SENTENCIA_BOOLEANA,WHILE, DO_WHILE;
 
@@ -57,7 +57,10 @@ EXPRECION ::=
     Identificador Igual Identificador Multiplicacion Numero PuntoyComa |
     Identificador Igual Numero Multiplicacion Identificador PuntoyComa |
     Identificador Igual Identificador Division Numero PuntoyComa |
-    Identificador Igual Numero Division Identificador PuntoyComa
+    Identificador Igual Numero Division Identificador PuntoyComa |
+    Return Identificador PuntoyComa |
+    Return Numero PuntoyComa |
+    Return Literal PuntoyComa 
     
 ;
 

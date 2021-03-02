@@ -1,9 +1,11 @@
-public class Main{
-int a=5;
-int med(){
-if(a>5){
-int b=6;
-b=a+5;
-}
-}
+public class ejemplo {
+ int a = 6;
+
+ public int bucle(int a){
+  int c=0;
+  while(c>a){
+   c = c + 1;
+  }
+  return c;
+ }
 }

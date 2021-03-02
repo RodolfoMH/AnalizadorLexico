@@ -12,6 +12,7 @@ espacio=[ ,\t,\r]+
     public String lexeme;
 %}
 %%
+return {lexeme=yytext(); return Return;}
 public {lexeme=yytext(); return Public;}
 private {lexeme=yytext(); return Private;}
 class {lexeme=yytext(); return Class;}
